@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -57,9 +58,30 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignInSide() {
-    const classes = useStyles();
+async function loginUser(credentials) {
+    return fetch('http://localhost:8080/signin', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(credentials)
+    })
+        .then(data => data.json())
+}
 
+export default function SignInSide({ setToken }) {
+    const classes = useStyles();
+    const [username, setUserName] = useState();
+    const [password, setPassword] = useState();
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+        const token = await loginUser({
+            username,
+            password
+        });
+        setToken(token);
+    }
     return (
         <Grid container component="main" className={classes.root}>
             <CssBaseline />
@@ -82,6 +104,7 @@ export default function SignInSide() {
                             label="Email Address"
                             name="email"
                             autoComplete="email"
+                            onChange={e => setUserName(e.target.value)}
                             autoFocus
                         />
                         <TextField
@@ -94,6 +117,7 @@ export default function SignInSide() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            onChange={e => setPassword(e.target.value)}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
@@ -105,6 +129,7 @@ export default function SignInSide() {
                             variant="contained"
                             color="primary"
                             href={"/Dashboard"}
+                            onClick={handleSubmit}
                             className={classes.submit}
                         >
                             Sign In
@@ -129,4 +154,8 @@ export default function SignInSide() {
             </Grid>
         </Grid>
     );
+
+}
+SignInSide.propTypes = {
+    setToken: PropTypes.func.isRequired
 }
