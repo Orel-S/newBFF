@@ -1,19 +1,15 @@
 import './App.css';
-import React, { useState } from 'react';
+import React from 'react';
 import SignInSide from "./SignIn";
 import SignUp from "./SignUp";
 import SignUp2 from "./SignUp2";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import PassReset from "./PassReset";
 import Dashboard from "./Dashboard";
-import useToken from "./useToken";
 
 
 function App() {
-    const { token, setToken } = useToken();
-    if(!token) {
-        return <SignInSide setToken={setToken} />
-    }
+
   return (
 <Router>
       <Switch>
