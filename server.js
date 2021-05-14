@@ -6,16 +6,15 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const withAuth = require('./middleware');
-
+require('dotenv').config({path: './vars.env'});
 const app = express();
 
-const secret = 'mysecretsshhh';
-
+const secret = process.env.SECRET;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-const mongo_uri = 'mongodb://localhost/react-auth';
+const mongo_uri = process.env.MONGO_URI;
 mongoose.connect(mongo_uri, { useNewUrlParser: true, useUnifiedTopology: true }, function(err) {
     if (err) {
         throw err;
@@ -40,12 +39,14 @@ app.get('/api/secret', withAuth, function(req, res) {
 });
 
 app.post('/api/register', function(req, res) {
+    console.log("Attempting to Register...");
     const { email, password } = req.body;
+    console.log( { email, password });
     const user = new User({ email, password });
     user.save(function(err) {
         if (err) {
             console.log(err);
-            res.status(500).send("Error registering new user please try again.");
+            res.status(500).send("Error registering new user, please try again.");
         } else {
             res.status(200).send("Welcome to the club!");
         }
@@ -59,7 +60,7 @@ app.post('/api/authenticate', function(req, res) {
             console.error(err);
             res.status(500)
                 .json({
-                    error: 'Internal error please try again'
+                    error: 'Internal error, please try again'
                 });
         } else if (!user) {
             res.status(401)
@@ -71,7 +72,7 @@ app.post('/api/authenticate', function(req, res) {
                 if (err) {
                     res.status(500)
                         .json({
-                            error: 'Internal error please try again'
+                            error: 'Internal error, please try again'
                         });
                 } else if (!same) {
                     res.status(401)

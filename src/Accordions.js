@@ -61,7 +61,7 @@ export default function PreferenceAccordions() {
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-                        L
+                        This feature is currently under development.
                     </Typography>
                 </AccordionDetails>
             </Accordion>
@@ -71,7 +71,7 @@ export default function PreferenceAccordions() {
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-                        L
+                        Please check back soon for an update!
                     </Typography>
                 </AccordionDetails>
             </Accordion>

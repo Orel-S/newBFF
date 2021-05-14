@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import PreferenceAccordions from "./Accordions";
 
 function Copyright() {
     return (
@@ -55,8 +56,34 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignUp() {
+export default function SignUp(props) {
     const classes = useStyles();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const onSubmit = (event) => {
+        event.preventDefault();
+        fetch('/api/register', {
+            method: 'POST',
+            body: JSON.stringify({email, password}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => {
+                if (res.status === 200) {
+                    //props.history && props.history.push('/');
+                    alert('signed in');
+                } else {
+                    const error = new Error(res.error);
+                    throw error;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Error signing up, please try again');
+            });
+    }
 
     return (
         <Grid container component="main" className={classes.root}>
@@ -68,7 +95,7 @@ export default function SignUp() {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        You're just two steps away from meeting your new BFF!
+                        You're just a few steps away from meeting your new BFF!
                     </Typography>
                     <form className={classes.form} noValidate>
                         <TextField
@@ -100,6 +127,7 @@ export default function SignUp() {
                             label="Email Address"
                             name="email"
                             autoComplete="email"
+                            onChange={e => setEmail(e.target.value)}
                         />
                         <TextField
                             variant="outlined"
@@ -119,6 +147,7 @@ export default function SignUp() {
                             label="Password"
                             type="password"
                             id="password"
+                            onChange={e => setPassword(e.target.value)}
                             autoComplete="current-password"
                         />
                         <TextField
@@ -131,15 +160,17 @@ export default function SignUp() {
                             type="password"
                             id="confirm-password"
                         />
+                        <PreferenceAccordions/>
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
                             className={classes.submit}
-                            href={"/signup2"}
+                            href={"/signin"}
+                            onClick={onSubmit}
                         >
-                            Continue
+                            Create My Account
                         </Button>
                         <Grid container>
                             <Grid item>
