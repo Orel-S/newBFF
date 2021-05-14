@@ -72,8 +72,7 @@ export default function SignUp(props) {
         })
             .then(res => {
                 if (res.status === 200) {
-                    //props.history && props.history.push('/');
-                    alert('signed in');
+                    props.history && props.history.push('/');
                 } else {
                     const error = new Error(res.error);
                     throw error;

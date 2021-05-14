@@ -39,9 +39,9 @@ app.get('/api/secret', withAuth, function(req, res) {
 });
 
 app.post('/api/register', function(req, res) {
-    console.log("Attempting to Register...");
+    //console.log("Attempting to Register...");
     const { email, password } = req.body;
-    console.log( { email, password });
+    //console.log( { email, password });
     const user = new User({ email, password });
     user.save(function(err) {
         if (err) {
