@@ -22,19 +22,9 @@ import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import {ChatController} from "chat-ui-react";
+import {MuiChat} from "chat-ui-react";
+import Copyright from "./copyright";
 
 const drawerWidth = 240;
 
@@ -116,7 +106,22 @@ const useStyles = makeStyles((theme) => ({
         height: 240,
     },
 }));
+function Chat():  React.ReactElement {
+    const [chatCtl] = React.useState(new ChatController());
 
+    React.useMemo(async () => {
+        // Chat content is displayed using ChatController
+        await chatCtl.addMessage({
+            type: 'text',
+            content: `Hello, What's your name.`,
+            self: false,
+        });
+        const name = await chatCtl.setActionRequest({ type: 'text' });
+    }, [chatCtl]);
+
+    // Only one component used for display
+    return <MuiChat chatController={chatCtl} />;
+}
 export default function Dashboard() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
@@ -184,6 +189,9 @@ export default function Dashboard() {
                             <Paper className={fixedHeightPaper}>
                                 <Deposits />
                             </Paper>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Chat/>
                         </Grid>
                         {/* Recent Orders */}
                         <Grid item xs={12}>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,19 +11,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import PreferenceAccordions from "./Accordions";
+import Copyright from "./copyright";
 
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                newBFF
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,8 +48,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp(props) {
     const classes = useStyles();
+    const [firstName, setFirstName] = useState('');
+    const [firstNameError, setFirstNameError] = useState('');
+    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [confirmEmail, setConfirmEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [btnEnabled, setBtnEnabled] = useState(true);
+    useEffect(() => {
+        const enabled = isValid();
+        if(enabled !== btnEnabled){
+            setBtnEnabled(isValid());
+        }
+    },[firstName, lastName, email, confirmEmail, password, confirmPassword]);
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -83,6 +87,51 @@ export default function SignUp(props) {
                 alert('Error signing up, please try again');
             });
     }
+    const isValid = (event) => {
+        let result = [true, true, true];
+        if (email !== confirmEmail){
+            setEmailError("Emails do not match.");
+            result[0] = false;
+        }
+        else if (email === ""){
+            setEmailError("Email cannot be empty.")
+            result[0] = false;
+        }
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+            setEmailError("Improper Email format.")
+            result[0] = false;
+        }
+        else{
+            setEmailError("");
+        }
+        if (password !== confirmPassword){
+            setPasswordError("Passwords do not match.")
+            result[1] = false;
+        }
+        else if (password === ""){
+            setPasswordError("Email cannot be empty.")
+            result[1] = false;
+        }
+        else if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(password)){
+            setPasswordError("Password must contain at least 8 characters, and include at least one letter, one number, and one special character.")
+            result[1] = false;
+        }
+
+        else{
+            setPasswordError("");
+        }
+
+        if(firstName === ""){
+            setFirstNameError("First Name cannot be empty.")
+            result[2] = false;
+        }
+        else{
+            setFirstNameError("");
+        }
+
+        return result.every(e => e === true);
+
+    }
 
     return (
         <Grid container component="main" className={classes.root}>
@@ -98,6 +147,7 @@ export default function SignUp(props) {
                     </Typography>
                     <form className={classes.form} noValidate>
                         <TextField
+                            error = {firstNameError !== ""}
                             variant="outlined"
                             margin="normal"
                             required
@@ -106,6 +156,8 @@ export default function SignUp(props) {
                             label="First Name"
                             name="given-name"
                             autoComplete="given-name"
+                            onChange={e => setFirstName(e.target.value)}
+                            helperText={firstNameError}
                             autoFocus
                         />
                         <TextField
@@ -116,8 +168,10 @@ export default function SignUp(props) {
                             label="Last Name"
                             name="family-name"
                             autoComplete="family-name"
+                            onChange={e => setLastName(e.target.value)}
                         />
                         <TextField
+                            error = {emailError !== ""}
                             variant="outlined"
                             margin="normal"
                             required
@@ -126,6 +180,7 @@ export default function SignUp(props) {
                             label="Email Address"
                             name="email"
                             autoComplete="email"
+                            helperText={emailError}
                             onChange={e => setEmail(e.target.value)}
                         />
                         <TextField
@@ -136,8 +191,10 @@ export default function SignUp(props) {
                             id="confirm-email"
                             label="Confirm Email Address"
                             name="confirm-email"
+                            onChange={e => setConfirmEmail(e.target.value)}
                         />
                         <TextField
+                            error = {passwordError !== ""}
                             variant="outlined"
                             margin="normal"
                             required
@@ -148,6 +205,7 @@ export default function SignUp(props) {
                             id="password"
                             onChange={e => setPassword(e.target.value)}
                             autoComplete="current-password"
+                            helperText={passwordError}
                         />
                         <TextField
                             variant="outlined"
@@ -158,13 +216,15 @@ export default function SignUp(props) {
                             label="Confirm Password"
                             type="password"
                             id="confirm-password"
+                            onChange={e => setConfirmPassword(e.target.value)}
                         />
                         <PreferenceAccordions/>
-                        <Button
+                        <Button disabled={!btnEnabled}
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
+                            id="submit"
                             className={classes.submit}
                             href={"/signin"}
                             onClick={onSubmit}
