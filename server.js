@@ -32,18 +32,47 @@ app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+/*app.post('/api/profile', function (req, res) {
+
+   const { email } = req.body;
+  //return res.json({bla: "Welcome to the club!"});
+
+    // res.send({bla: "Welcome to the club!"});
+   return User.findOne({ 'email': email}, 'bio img firstname lastname', (err, user) => {
+        if (err) {
+            console.log(err);
+        }
+       //res.send({bla: "posWelcome to the club!"});
+      //  return user;
+    })
+   .then(result => {
+        console.log('POST.Profile',{result});
+        //const profRes =
+            result.json(result);
+    });
+});*/
+app.post('/api/profile', (req, res) => {
+    const { email } = req.body;
+    User.findOne({ 'email': email}, 'bio img firstname lastname', (err, user) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log({user});
+        res.json(user);
+    })
+});
 app.post('/api/register', function(req, res) {
     //console.log("Attempting to Register...");
-    const { email, password, bio, img } = req.body;
+    const { email, password, bio, img, firstname, lastname } = req.body;
 
     /*const data =  fs.readFileSync(path.join(__dirname + img));*/
     const data =  fs.readFileSync(path.join(__dirname + "\\src\\" + img));
-    console.log( { email, password, bio,data });
+    console.log( { email, password, bio,data, firstname, lastname });
     const imgData =  {
         data,
         contentType: 'image/png'
     }
-    const user = new User({ email, password, bio, img: imgData });
+    const user = new User({ email, password, bio, img: imgData, firstname, lastname });
     user.save(function(err) {
         if (err) {
             console.log(err);
@@ -98,3 +127,4 @@ app.get('/checkToken', withAuth, function(req, res) {
 });
 
 app.listen(process.env.PORT || 8080);
+

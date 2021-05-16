@@ -69,7 +69,7 @@ export default function SignUp(props) {
         event.preventDefault();
         fetch('/api/register', {
             method: 'POST',
-            body: JSON.stringify({email, password, bio:"Place your bio here!", img: './images/profile.png'}),
+            body: JSON.stringify({email, password, bio:"Place your bio here!", img: './images/profile.png', firstname: firstName, lastname: lastName}),
             headers: {
                 'Content-Type': 'application/json'
             }

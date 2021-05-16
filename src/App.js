@@ -9,6 +9,7 @@ import Profile from "./Profile";
 import Chat from "./Chat";
 
 function App() {
+    const [myData, setMyData] = useState(null);
     const [imgFile, setImgFile] = useState(null);
     const onSelectImage = (e) => {
         e.preventDefault();
@@ -25,6 +26,10 @@ function App() {
 
         reader.readAsDataURL(file)
     }
+    const onSuccess = (data) =>{
+        setMyData(data);
+        console.log(JSON.stringify(data));
+    }
   return (
 /*      <div>
           {imgFile && imgFile.url &&
@@ -33,10 +38,16 @@ function App() {
       </div>*/
 <Router>
       <Switch>
-        <Route exact path="/" component={withAuth(Profile)} />
+        <Route exact path="/" component={withAuth(Profile, {data: myData})} />
         <Route path="/chat" component={withAuth(Chat)} />
         <Route path="/passreset" component={PassReset} />
-        <Route path="/signin" component={SignInSide} />
+       {/* <Route path="/signin" component={()=><SignInSide onSuccess={onSuccess}/>} />*/}
+        <Route
+            path="/signin"
+            render={(props) => (
+                <SignInSide {...props} onSuccess={onSuccess}/>
+            )}
+            />
         <Route path="/signup" component={SignUp} />
       </Switch>
 </Router>

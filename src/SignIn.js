@@ -45,12 +45,44 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+async function getProfile(email){
+    const response = await fetch('/api/profile', {
+        method: 'POST',
+        body: JSON.stringify({email}),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+    });
+    return await response.json();
+}
 
 export default function SignInSide(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const classes = useStyles();
 
+/*    const updateData = async (email) => {
+        const response = await fetch('/api/profile', {
+            method: 'POST',
+            body: JSON.stringify({email}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(rsp => rsp.json())
+            .then(json => console.log('updateData', {json}));
+       // const response = await fetch('/api/profile');
+
+        console.log({response});
+
+        alert(`SignIn ->>> ${JSON.stringify(response)}`);
+
+        if(response.ok){
+
+          props.onSuccess && props.onSuccess(response.data);
+        }
+    }*/
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -60,9 +92,12 @@ export default function SignInSide(props) {
             headers: {
                 'Content-Type': 'application/json'
             }
-        })
-            .then(res => {
+        }).then(res => {
                 if (res.status === 200) {
+                    getProfile(email).then(profile => {
+                        console.log({profile});
+                        props.onSuccess && props.onSuccess(profile);
+                    })
                     props.history && props.history.push('/');
                 } else {
                     const error = new Error(res.error);

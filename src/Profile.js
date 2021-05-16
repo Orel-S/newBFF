@@ -14,6 +14,8 @@ import ChatIcon from '@material-ui/icons/Chat';
 import Button from '@material-ui/core/Button';
 import Chat from './Chat';
 
+
+
 const useStyles = makeStyles((theme) => ({
     root: {
 
@@ -37,8 +39,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Profile() {
+export default function Profile(props) {
     const classes = useStyles();
+    console.log(`My name:${props.data.user.firstname}`);
+    const {firstname, lastname, bio, img} = props.data.user;
 
     return (
         <>
@@ -54,17 +58,18 @@ export default function Profile() {
                             <MoreVertIcon/>
                         </IconButton>
                     }
-                    title="Shrimp and Chorizo Paella"
+                    title={`${firstname} ${lastname}`}
                     subheader="September 14, 2016"
                 />
                 <CardMedia
+                    component="img"
                     className={classes.media}
-                    image="https://media-cldnry.s-nbcnews.com/image/upload/newscms/2021_07/2233721/171120-smile-stock-njs-333p-2233721.jpg"
+                    src={`data:image/png;base64,${img.img.data.toString('base64')}`}
                     title="Paella dish"
                 />
                 <CardContent>
                     <Typography variant="h4" color="textSecondary" component="p">
-                        I like smiling.
+                        {bio}
                     </Typography>
                 </CardContent>
                 {/*<CardActions disableSpacing>
