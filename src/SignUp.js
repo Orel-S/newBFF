@@ -109,7 +109,7 @@ export default function SignUp(props) {
             result[1] = false;
         }
         else if (password === ""){
-            setPasswordError("Email cannot be empty.")
+            setPasswordError("Password cannot be empty.")
             result[1] = false;
         }
         else if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(password)){
