@@ -12,6 +12,7 @@ import { red } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ChatIcon from '@material-ui/icons/Chat';
 import Button from '@material-ui/core/Button';
+import Chat from './Chat';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -40,6 +41,7 @@ export default function Profile() {
     const classes = useStyles();
 
     return (
+        <>
         <Card className={classes.root}>
             <CardHeader
                 avatar={
@@ -71,10 +73,13 @@ export default function Profile() {
                     color="primary"
                     className={classes.button}
                     startIcon={<ChatIcon />}
+                    href="/Chat"
                 >
                     Chat
                 </Button>
             </CardActions>
         </Card>
+        <Chat/>
+        </>
     );
 }
