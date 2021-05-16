@@ -42,44 +42,44 @@ export default function Profile() {
 
     return (
         <>
-        <Card className={classes.root}>
-            <CardHeader
-                avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
-                        R
-                    </Avatar>
-                }
-                action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon/>
-                    </IconButton>
-                }
-                title="Shrimp and Chorizo Paella"
-                subheader="September 14, 2016"
-            />
-            <CardMedia
-                className={classes.media}
-                image="https://media-cldnry.s-nbcnews.com/image/upload/newscms/2021_07/2233721/171120-smile-stock-njs-333p-2233721.jpg"
-                title="Paella dish"
-            />
-            <CardContent>
-                <Typography variant="h4" color="textSecondary" component="p">
-                    I like smiling.
-                </Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    startIcon={<ChatIcon />}
-                    href="/Chat"
-                >
-                    Chat
-                </Button>
-            </CardActions>
-        </Card>
-        <Chat/>
+            <Card className={classes.root}>
+                <CardHeader
+                    avatar={
+                        <Avatar aria-label="recipe" className={classes.avatar}>
+                            R
+                        </Avatar>
+                    }
+                    action={
+                        <IconButton aria-label="settings">
+                            <MoreVertIcon/>
+                        </IconButton>
+                    }
+                    title="Shrimp and Chorizo Paella"
+                    subheader="September 14, 2016"
+                />
+                <CardMedia
+                    className={classes.media}
+                    image="https://media-cldnry.s-nbcnews.com/image/upload/newscms/2021_07/2233721/171120-smile-stock-njs-333p-2233721.jpg"
+                    title="Paella dish"
+                />
+                <CardContent>
+                    <Typography variant="h4" color="textSecondary" component="p">
+                        I like smiling.
+                    </Typography>
+                </CardContent>
+                {/*<CardActions disableSpacing>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        startIcon={<ChatIcon />}
+                        href="/Chat"
+                    >
+                        Chat
+                    </Button>
+                </CardActions>*/}
+            </Card>
+            <Chat/>
         </>
     );
 }

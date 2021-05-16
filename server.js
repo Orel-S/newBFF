@@ -8,6 +8,8 @@ const User = require('./models/User');
 const withAuth = require('./middleware');
 require('dotenv').config({path: './vars.env'});
 const app = express();
+const multer = require('multer');
+const fs  = require ('fs');
 
 const secret = process.env.SECRET;
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -30,17 +32,18 @@ app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.get('/api/randomdata', (req, res) => {
-    //get from db randomly
-    const profile = DB.get();// {name: 'aa', url:''};
-    res.json(profile);
-});
-
 app.post('/api/register', function(req, res) {
     //console.log("Attempting to Register...");
-    const { email, password } = req.body;
-    //console.log( { email, password });
-    const user = new User({ email, password });
+    const { email, password, bio, img } = req.body;
+
+    /*const data =  fs.readFileSync(path.join(__dirname + img));*/
+    const data =  fs.readFileSync(path.join(__dirname + "\\src\\" + img));
+    console.log( { email, password, bio,data });
+    const imgData =  {
+        data,
+        contentType: 'image/png'
+    }
+    const user = new User({ email, password, bio, img: imgData });
     user.save(function(err) {
         if (err) {
             console.log(err);
