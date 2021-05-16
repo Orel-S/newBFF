@@ -30,12 +30,10 @@ app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.get('/api/home', function(req, res) {
-    res.send('Welcome!');
-});
-
-app.get('/api/secret', withAuth, function(req, res) {
-    res.send('The password is potato');
+app.get('/api/randomdata', (req, res) => {
+    //get from db randomly
+    const profile = DB.get();// {name: 'aa', url:''};
+    res.json(profile);
 });
 
 app.post('/api/register', function(req, res) {
