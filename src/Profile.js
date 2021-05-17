@@ -41,8 +41,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Profile(props) {
     const classes = useStyles();
-    console.log(`My name:${props.data.user.firstname}`);
-    const {firstname, lastname, bio, img} = props.data.user;
+    //console.log(`My name:${props.data.user.firstname}`);
+    const {firstname, lastname, bio, img} = props.data;
 
     return (
         <>
@@ -64,7 +64,8 @@ export default function Profile(props) {
                 <CardMedia
                     component="img"
                     className={classes.media}
-                    src={`data:image/png;base64,${img.img.data.toString('base64')}`}
+                    img={img}
+                    //src={`data:image/png;base64,${img.img.data.toString('base64')}`}
                     title="Paella dish"
                 />
                 <CardContent>
