@@ -53,7 +53,28 @@ app.get('/', function (req, res) {
 });*/
 app.post('/api/profile', (req, res) => {
     const { email } = req.body;
-    User.findOne({ 'email': email}, 'bio img firstname lastname', (err, user) => {
+    User.findOne({ 'email': email}, 'email bio img firstname lastname', null, (err, user) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log({user});
+        res.json(user);
+    })
+});
+app.post('/api/updatebio', (req, res) => {
+    const { email, bio } = req.body;
+    User.findOneAndUpdate({ 'email': email}, {bio: bio}, {new: true},(err, user) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log("Updated bio:", bio)
+        console.log({user});
+        res.json(user);
+    })
+});
+app.post('/api/updateimg', (req, res) => {
+    const { email, img } = req.body;
+    User.findOneAndUpdate({ 'email': email}, {img: img}, {new: true}, (err, user) => {
         if (err) {
             console.log(err);
         }
@@ -122,7 +143,13 @@ app.post('/api/authenticate', function(req, res) {
     });
 });
 
-app.get('/checkToken', withAuth, function(req, res) {
+app.get('/api/logout', function(req, res){
+    res.clearCookie('token');
+    console.log("Cookie Cleared!");
+    return res.status(200).redirect('/signin');
+});
+
+app.get('/api/checkToken', withAuth, function(req, res) {
     res.sendStatus(200);
 });
 

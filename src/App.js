@@ -28,17 +28,20 @@ function App() {
 
         reader.readAsDataURL(file)
     }
-    const onSuccess = (data) =>{
+    let isLoaded = false;
+/*    const onSuccess = (data) =>{
         if (!data){
             return;
         }
         const newData = {...data};
         console.log({newData});
-        /*console.log({img: newData.user.img});*/
-        newData.img = arrayBufferToBase64(data.img);
+        /!*console.log({img: newData.user.img});*!/
+        /!*newData.img = arrayBufferToBase64(data.img);*!/
+        newData.img = Buffer.from(data.img.data).toString('base64')
+        localStorage.setItem('user', JSON.stringify(newData))
         setMyData(newData);
         console.log(JSON.stringify(newData));
-    }
+    }*/
   return (
 /*      <div>
           {imgFile && imgFile.url &&
@@ -47,17 +50,19 @@ function App() {
       </div>*/
 <Router>
       <Switch>
-        <Route exact path="/" component={withAuth(Profile, {data: myData})} />
-        <Route path="/chat" component={withAuth(Chat)} />
-        <Route path="/passreset" component={PassReset} />
+          {/*<Route exact path="/" component={withAuth(Profile, {...myData})} />*/}
+          <Route exact path="/" component={withAuth(Profile)} />
+          <Route path="/chat" component={withAuth(Chat)} />
+          <Route path="/passreset" component={PassReset} />
        {/* <Route path="/signin" component={()=><SignInSide onSuccess={onSuccess}/>} />*/}
-        <Route
+{/*        <Route
             path="/signin"
             render={(props) => (
                 <SignInSide {...props} onSuccess={onSuccess}/>
             )}
-            />
-        <Route path="/signup" component={SignUp} />
+            />*/}
+          <Route path="/signin" component={SignInSide} />
+          <Route path="/signup" component={SignUp} />
       </Switch>
 </Router>
   );

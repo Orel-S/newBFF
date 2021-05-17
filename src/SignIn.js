@@ -96,7 +96,8 @@ export default function SignInSide(props) {
                 if (res.status === 200) {
                     getProfile(email).then(profile => {
                         console.log({profile});
-                        props.onSuccess && props.onSuccess(profile);
+                        //props.onSuccess && props.onSuccess(profile);
+                        localStorage.setItem('user', JSON.stringify(profile))
                     })
                     props.history && props.history.push('/');
                 } else {
