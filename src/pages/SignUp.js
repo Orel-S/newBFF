@@ -9,10 +9,10 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import PreferenceAccordions from "./Accordions";
-import Copyright from "./utils/copyright";
-import { useOuterStyles } from "./styles/styles";
-import { register } from "./api/api";
+import PreferenceAccordions from "../components/Accordions";
+import Copyright from "../components/copyright";
+import { useOuterStyles } from "../styles/styles";
+import { register } from "../api/api";
 
 
 export default function SignUp(props) {
@@ -27,6 +27,7 @@ export default function SignUp(props) {
     const [passwordError, setPasswordError] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [btnEnabled, setBtnEnabled] = useState(true);
+
     useEffect(() => {
         const enabled = isValid();
         if(enabled !== btnEnabled){
@@ -37,11 +38,12 @@ export default function SignUp(props) {
     const onSubmit = (event) => {
         event.preventDefault();
         register(email, password, firstName, lastName)
-            .then(res => {
+            .then(() => {
                 props.history && props.history.push('/signin');
             });
 
     }
+
     const isValid = (event) => {
         let result = [true, true, true];
         if (email !== confirmEmail){
@@ -188,7 +190,7 @@ export default function SignUp(props) {
                         </Button>
                         <Grid container>
                             <Grid item>
-                                <Link href="/SignIn" variant="body2">
+                                <Link href="/signin" variant="body2">
                                     {"Already have an account?"}
                                 </Link>
                             </Grid>

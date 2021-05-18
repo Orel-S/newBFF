@@ -37,10 +37,10 @@ export async function authenticate(email, password){
         });
 }
 
-export async function update(email, bio = null, img = null, itemToUpdate){
-    fetch('/api/updatebio', {
+export async function update(email, obj){
+    fetch('/api/update', {
         method: 'POST',
-        body: JSON.stringify({email, bio}),
+        body: JSON.stringify({email, [obj.key]: obj.value}),
         headers: {
             'Content-Type': 'application/json'
         }
@@ -91,14 +91,34 @@ export async function logout(){
     fetch('/api/logout', {
         method: 'get',
         credentials: 'include'
-    }).then(function(response) {
-        if (response.redirected) {
-            return window.location.replace(response.url);
-        }
+    })
+        .then(function(response) {
+            if (response.redirected) {
+                return window.location.replace(response.url);
+            }
 
-    }).catch(function(err) {
-        console.log(err);
-    });
+    })
+        .catch(function(err) {
+            console.log(err);
+        });
+}
+
+export async function checkToken(){
+    fetch('/api/checkToken')
+        .then(res => {
+            if (res.status === 200) {
+                Promise.resolve(true);
+                /*this.setState({ loading: false });*/
+            } else {
+                const error = new Error(res.error);
+                throw error;
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            Promise.resolve(false);
+            /*this.setState({ loading: false, redirect: true });*/
+        });
 }
 
 

@@ -6,17 +6,16 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const withAuth = require('./middleware');
-require('dotenv').config({path: './vars.env'});
+require('dotenv').config({path: './.env'});
 const app = express();
-const multer = require('multer');
 const fs  = require ('fs');
-
 const secret = process.env.SECRET;
+const mongo_uri = process.env.MONGO_URI;
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-const mongo_uri = process.env.MONGO_URI;
 mongoose.connect(mongo_uri, { useNewUrlParser: true, useUnifiedTopology: true }, function(err) {
     if (err) {
         throw err;
@@ -27,68 +26,33 @@ mongoose.connect(mongo_uri, { useNewUrlParser: true, useUnifiedTopology: true },
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-/*app.post('/api/profile', function (req, res) {
-
-   const { email } = req.body;
-  //return res.json({bla: "Welcome to the club!"});
-
-    // res.send({bla: "Welcome to the club!"});
-   return User.findOne({ 'email': email}, 'bio img firstname lastname', (err, user) => {
-        if (err) {
-            console.log(err);
-        }
-       //res.send({bla: "posWelcome to the club!"});
-      //  return user;
-    })
-   .then(result => {
-        console.log('POST.Profile',{result});
-        //const profRes =
-            result.json(result);
-    });
-});*/
 app.post('/api/profile', (req, res) => {
     const { email } = req.body;
     User.findOne({ 'email': email}, 'email bio img firstname lastname', null, (err, user) => {
         if (err) {
             console.log(err);
         }
-        console.log({user});
         res.json(user);
     })
 });
-app.post('/api/updatebio', (req, res) => {
+
+app.post('/api/update', (req, res) => {
     const { email, bio } = req.body;
     User.findOneAndUpdate({ 'email': email}, {bio: bio}, {new: true},(err, user) => {
         if (err) {
             console.log(err);
         }
-        console.log("Updated bio:", bio)
-        console.log({user});
         res.json(user);
     })
 });
-app.post('/api/updateimg', (req, res) => {
-    const { email, img } = req.body;
-    User.findOneAndUpdate({ 'email': email}, {img: img}, {new: true}, (err, user) => {
-        if (err) {
-            console.log(err);
-        }
-        console.log({user});
-        res.json(user);
-    })
-});
-app.post('/api/register', function(req, res) {
-    //console.log("Attempting to Register...");
-    const { email, password, bio, img, firstname, lastname } = req.body;
 
-    /*const data =  fs.readFileSync(path.join(__dirname + img));*/
+app.post('/api/register', function(req, res) {
+    const { email, password, bio, img, firstname, lastname } = req.body;
     const data =  fs.readFileSync(path.join(__dirname + "\\src\\" + img));
-    console.log( { email, password, bio,data, firstname, lastname });
     const imgData =  {
         data,
         contentType: 'image/png'
@@ -145,7 +109,6 @@ app.post('/api/authenticate', function(req, res) {
 
 app.get('/api/logout', function(req, res){
     res.clearCookie('token');
-    console.log("Cookie Cleared!");
     return res.status(200).redirect('/signin');
 });
 

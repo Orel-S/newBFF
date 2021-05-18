@@ -9,8 +9,8 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { useOuterStyles} from "./styles/styles";
-import Copyright from "./utils/copyright";
+import { useOuterStyles} from "../styles/styles";
+import Copyright from "../components/copyright";
 
 export default function PassReset() {
     const classes = useOuterStyles();
@@ -50,12 +50,12 @@ export default function PassReset() {
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <Link href="/SignIn" variant="body2">
+                                <Link href="/signin" variant="body2">
                                     Remembered your password?
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="/SignUp">
+                                <Link href="/signup">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>

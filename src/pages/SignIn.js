@@ -11,9 +11,9 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import Copyright from "./utils/copyright";
-import { authenticate } from './api/api';
-import { useOuterStyles } from "./styles/styles";
+import Copyright from "../components/copyright";
+import { authenticate } from '../api/api';
+import { useOuterStyles } from "../styles/styles";
 
 
 export default function SignInSide(props) {
@@ -24,10 +24,11 @@ export default function SignInSide(props) {
     const onSubmit = (event) =>{
         event.preventDefault();
         authenticate(email, password)
-            .then(res => {
+            .then(() => {
                 props.history && props.history.push('/');
             });
     }
+
         return (
             <Grid container component="main" className={classes.root}>
                 <CssBaseline/>
@@ -81,12 +82,12 @@ export default function SignInSide(props) {
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="/PassReset" variant="body2">
+                                    <Link href="/passreset" variant="body2">
                                         Forgot password?
                                     </Link>
                                 </Grid>
                                 <Grid item>
-                                    <Link href="/SignUp">
+                                    <Link href="/signup">
                                         {"Don't have an account? Sign Up"}
                                     </Link>
                                 </Grid>

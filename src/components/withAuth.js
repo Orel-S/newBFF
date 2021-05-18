@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+
 export default function withAuth(ComponentToProtect, args) {
     return class extends Component {
         constructor() {
@@ -23,19 +24,24 @@ export default function withAuth(ComponentToProtect, args) {
                     console.error(err);
                     this.setState({ loading: false, redirect: true });
                 });
+/*            checkToken()
+                .then(res => {
+                    if (res === true){
+                        this.setState({ loading: false });
+                    }
+                    else{
+                        this.setState({ loading: false, redirect: true });
+                    }
+                });*/
         }
         render() {
             const { loading, redirect } = this.state;
-            //alert(JSON.stringify(this.props));
-            //alert(JSON.stringify(args));
             if (loading) {
                 return null;
             }
             if (redirect) {
                 return <Redirect to="/signin" />;
             }
-            //return <ComponentToProtect {...this.props} />;
-            /*console.log(args);*/
             return <ComponentToProtect {...args} />;
         }
     }
