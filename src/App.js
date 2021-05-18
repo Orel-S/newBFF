@@ -4,10 +4,10 @@ import SignInSide from "./SignIn";
 import SignUp from "./SignUp";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import PassReset from "./PassReset";
-import withAuth from "./withAuth";
+import withAuth from "./api/withAuth";
 import Profile from "./Profile";
 import Chat from "./Chat";
-import { arrayBufferToBase64 } from "./util";
+import { arrayBufferToBase64 } from "./utils/util";
 
 const default_data = {user: {bio: "", img: null, firstname: "", lastname: ""}}
 function App() {

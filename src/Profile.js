@@ -14,50 +14,27 @@ import Button from '@material-ui/core/Button';
 import Chat from './Chat';
 import {TextField} from "@material-ui/core";
 import {ExitToApp} from "@material-ui/icons";
+import { useInnerStyles } from "./utils/util";
+import { logout, update } from "./api/api";
 
-
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-
-    },
-    media: {
-        height: 0,
-        paddingTop: '56.25%', // 16:9
-    },
-    expand: {
-        transform: 'rotate(0deg)',
-        marginLeft: 'auto',
-        transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest,
-        }),
-    },
-    expandOpen: {
-        transform: 'rotate(180deg)',
-    },
-    avatar: {
-        backgroundColor: red[500],
-    },
-}));
 
 
 
 export default function Profile(props) {
     const [editable, setEditable] = useState(false);
     const [newBio, setNewBio] = useState("");
-    const classes = useStyles();
-    //console.log(`My name:${props.data.user.firstname}`);
+    const classes = useInnerStyles();
     const userData = JSON.parse(localStorage.getItem('user'));
-    /*const userData = localStorage.getItem('user');*/
-    console.log(userData)
+    /*console.log(userData)
     console.log(userData.bio);
     console.log(userData.firstname);
     console.log(userData.lastname);
-    console.log(userData.email);
+    console.log(userData.email);*/
+    console.log(userData.img);
     const {firstname, lastname, bio, img, email} = userData;
     const iconLetter = firstname.charAt(0)
     const isValidData = () =>{
-        return  firstname && lastname && bio && email;
+        return  firstname && lastname && email;
     }
 
     return (
@@ -74,17 +51,10 @@ export default function Profile(props) {
                         action={
                             <IconButton aria-label="settings"
                                         onClick={() => {
-                                            //localStorage.removeItem('user');
-                                            fetch('/api/logout', {
-                                                method: 'get',
-                                                credentials: 'include'
-                                            }).then(function(response) {
-                                                if (response.redirected) {
-                                                    return window.location.replace(response.url);
-                                                }
-
-                                            }).catch(function(err) {
-                                                console.log(err);
+                                            localStorage.removeItem('user');
+                                            logout()
+                                            .then( response => {
+                                                return window.location.replace(response.url);
                                             });
                                         }}>
                                 <ExitToApp/>
@@ -111,26 +81,9 @@ export default function Profile(props) {
                         { editable && <Button variant="contained"  color="secondary" onClick={() => {
 
                             console.log("Updating bio to the following value:", newBio)
-                            console.log();
-                            fetch('/api/updatebio', {
-                                method: 'POST',
-                                body: JSON.stringify({email, bio: newBio}),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            }).then(res => {
-                                if (res) {
-                                    console.log({res});
-                                        localStorage.setItem('user', JSON.stringify(res))
-                                    }
-                                    else {
-                                        const error = new Error(res.error);
-                                        throw error;
-                                    }
-                                })
-                                .catch(err => {
-                                    console.log(err);
-                                    alert('Error updating please try again');
+                            update(email, newBio, null, true)
+                                .then(res => {
+                                    console.log(res);
                                 });
                             setEditable(false);
                         }}>
