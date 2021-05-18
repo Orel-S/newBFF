@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { useOuterStyles} from "./utils/util";
+import { useOuterStyles} from "./styles/styles";
 import Copyright from "./utils/copyright";
 
 export default function PassReset() {

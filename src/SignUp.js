@@ -11,7 +11,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import PreferenceAccordions from "./Accordions";
 import Copyright from "./utils/copyright";
-import { useOuterStyles } from "./utils/util";
+import { useOuterStyles } from "./styles/styles";
 import { register } from "./api/api";
 
 

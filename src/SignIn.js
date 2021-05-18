@@ -13,7 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Copyright from "./utils/copyright";
 import { authenticate } from './api/api';
-import { useOuterStyles } from "./utils/util";
+import { useOuterStyles } from "./styles/styles";
 
 
 export default function SignInSide(props) {

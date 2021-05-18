@@ -62,6 +62,7 @@ export async function update(email, bio = null, img = null, itemToUpdate){
         });
 }
 
+
 export async function register(email, password, firstname, lastname){
     fetch('/api/register', {
         method: 'POST',

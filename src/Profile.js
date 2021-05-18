@@ -14,10 +14,9 @@ import Button from '@material-ui/core/Button';
 import Chat from './Chat';
 import {TextField} from "@material-ui/core";
 import {ExitToApp} from "@material-ui/icons";
-import { useInnerStyles } from "./utils/util";
+import { useInnerStyles } from "./styles/styles";
 import { logout, update } from "./api/api";
-
-
+import { arrayBufferToBase64 } from "./utils/util";
 
 
 export default function Profile(props) {
@@ -31,7 +30,12 @@ export default function Profile(props) {
     console.log(userData.lastname);
     console.log(userData.email);*/
     console.log(userData.img);
+
     const {firstname, lastname, bio, img, email} = userData;
+    console.log(img);
+    /*const imageData = (JSON.stringify(img.data.data).toString('base64'));*/
+    const imageData = arrayBufferToBase64(img.data.data);
+    console.log(imageData);
     const iconLetter = firstname.charAt(0)
     const isValidData = () =>{
         return  firstname && lastname && email;
@@ -62,13 +66,10 @@ export default function Profile(props) {
                         }
                         title={`${firstname} ${lastname}`}
                     />
-                    <CardMedia
-                        component="img"
-                        className={classes.media}
-                        src={`data:image/png;base64,${img}`}
-                        //src={`data:image/png;base64,${img.img.data.toString('base64')}`}
-                    />
+
+                    {<img src={imageData} className={classes.media} ></img>}
                     <CardContent>
+
                         { !editable && <Typography variant="h4" color="textSecondary" component="p">
                             {bio}
                         </Typography>}
