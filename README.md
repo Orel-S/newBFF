@@ -22,8 +22,8 @@ Store them as follows:
 You should be good to go! If you're experiencing any trouble feel free to open an issue or pull request.
 
 
-##Possible Bugs
+## Possible Bugs
 
-###Signing in doesn't work!
+### Signing in doesn't work!
 
 If you are certain your account details are correct, then try to go directly to the `localhost:3000` page. This issue occurs when the sign in page reloads before authentication is confirmed with the server.
