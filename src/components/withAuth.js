@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 
+//This component wraps around another component and ensures the user attempting to access it has authorization
+//In this case, if the user is not logged in, they are redirected to the signin page.
 export default function withAuth(ComponentToProtect, args) {
     return class extends Component {
         constructor() {

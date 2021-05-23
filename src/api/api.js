@@ -1,5 +1,6 @@
 import { saveUser } from '../utils/util';
 
+//Using email as a key, we search the database and retrieve user info to populate the profile page.
 async function getProfile(email){
     const response = await fetch('/api/profile', {
         method: 'POST',
@@ -12,6 +13,7 @@ async function getProfile(email){
     return await response.json();
 }
 
+//Check email and password against the database to make sure the user is valid. If valid, save data in local storage.
 export async function authenticate(email, password){
     fetch('/api/authenticate', {
         method: 'POST',
@@ -37,6 +39,8 @@ export async function authenticate(email, password){
         });
 }
 
+//Uses email as a key to find a database user entry, then updates one of the elements using obj.key and obj.value
+//Current limitation: Can only update one element at a time. Should rework this to be able to update an arbitrary number of elements.
 export async function update(email, obj){
     fetch('/api/update', {
         method: 'POST',
@@ -62,7 +66,7 @@ export async function update(email, obj){
         });
 }
 
-
+//Creates a new database entry, using email as the key
 export async function register(email, password, firstname, lastname){
     fetch('/api/register', {
         method: 'POST',
@@ -85,8 +89,7 @@ export async function register(email, password, firstname, lastname){
         });
 }
 
-
-
+//Clears saved user data and redirects to the sign in page
 export async function logout(){
     fetch('/api/logout', {
         method: 'get',
@@ -103,6 +106,7 @@ export async function logout(){
         });
 }
 
+//Checks to see if user is signed in and has a valid token
 export async function checkToken(){
     fetch('/api/checkToken')
         .then(res => {
